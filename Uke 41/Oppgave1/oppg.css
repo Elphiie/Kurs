@@ -1,0 +1,45 @@
+table {
+  border-collapse:collapse;
+}
+
+th, td{
+  height:200px;
+  width:200px;
+  border:2px;
+}
+
+.rute1 {
+  background-color:red;
+}
+
+.rute2{
+  background-color:blue;
+}
+
+.rute3{
+  background-color:green;
+}
+
+.rute4{
+  background-color:yellow;
+}
+
+.rute5{
+  background-color:pink;
+}
+
+.rute6{
+  background-color:black;
+}
+
+.rute7{
+  background-color:orange;
+}
+
+.rute8{
+  background-color:purple;
+}
+
+.rute9{
+  background-color:magenta;
+}

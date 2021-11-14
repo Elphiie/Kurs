@@ -1,0 +1,50 @@
+body, html{
+  height: 100%;
+}
+
+.bilde{
+  min-height: 100%;
+  margin: -8px;
+  background: linear-gradient(rgba(0, 0, 0, -1), rgba(0, 0, 0, 1)), url("EP.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+h1{
+  font-size: 225%;
+}
+
+hr{
+  margin: 0px 150px;
+}
+
+.tekst{
+  padding-top: 25%;
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  font-family: Montserrat, sans-serif;
+  position: relative;
+  overflow:auto;
+}
+
+.knapp{
+  background-color:gray;
+  border: none;
+  text-align: center;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: bolder;
+  color: inherit;
+}
+
+.knapp:hover{
+  background-color: slategray;
+}
+
+.knapp:active{
+  background-color: darkslategray;
+  color: black;
+}

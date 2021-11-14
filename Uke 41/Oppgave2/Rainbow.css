@@ -1,0 +1,39 @@
+html {height:100%; width:100%; margin:0;}
+body {text-align:center; height:100%; width:100%; margin:0;}
+
+
+.red {
+  background-color:red;
+  color:green;
+  height:16.67%
+}
+
+.orange {
+  background-color:orange;
+  color:blue;
+  height:16.67%
+}
+
+.yellow{
+  background-color:yellow;
+  color:green;
+  height:16.67%
+}
+
+.green{
+  background-color:green;
+  color:yellow;
+  height:16.67%
+}
+
+.purple{
+  background-color:purple;
+  color:black;
+  height:16.67%
+}
+
+.pink{
+  background-color:pink;
+  color:blue;
+  height:16.67%
+}

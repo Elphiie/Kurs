@@ -1,0 +1,23 @@
+.knapp {
+    border: 0;
+    text-align: center;
+    width: 150px;
+    height: 50px;
+    background: url("../img/nly.jpg");
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+    align-content: center;
+    transform: translate(400%, 0);
+}
+.knapp:hover {
+    opacity:69%;
+}
+
+.knapp:active{
+    opacity:200%;
+}
+
+p{
+    text-align:center;
+}

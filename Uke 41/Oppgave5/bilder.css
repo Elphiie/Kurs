@@ -1,0 +1,19 @@
+
+
+.bakgrunn{
+  position: absolute;
+  max-width: 100%;
+  max-height: 100vh;
+  margin: auto;
+}
+
+.aimgbox{
+  padding-left: 500px;
+  padding-top: 400px;
+}
+
+.mario{
+  position: absolute;
+  width: 10%;
+  height:auto;
+}

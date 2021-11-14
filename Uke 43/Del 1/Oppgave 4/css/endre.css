@@ -1,0 +1,15 @@
+body, html{
+  height: 100%
+}
+
+.pics{
+  width: 50%;
+  height: auto;
+  content: url("C:/Users/Elphie/Documents/Atom Projects/ALF kurs/Uke 43/Oppgave 4/bilder/luigi.png");
+}
+
+.pics:hover{
+  width: 50%;
+  height: auto;
+  content: url("C:/Users/Elphie/Documents/Atom Projects/ALF kurs/Uke 43/Oppgave 4/bilder/mario.png");
+}

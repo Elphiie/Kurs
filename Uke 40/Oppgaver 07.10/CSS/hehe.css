@@ -1,0 +1,7 @@
+.knapp {
+  opacity:0.2;
+}
+
+.knapp:hover{
+  opacity:100;
+}

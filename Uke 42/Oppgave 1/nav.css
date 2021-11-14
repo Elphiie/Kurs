@@ -1,0 +1,34 @@
+header{
+  margin: -8.5px -8px;
+}
+
+.bilde{
+  width: 100%;
+  height:500px;
+}
+
+.navbar{
+  background-color: slategray;
+  overflow:hidden;
+  margin-top: -4px;
+}
+
+.navbar a{
+  float: left;
+  color:white;
+  text-align: center;
+  padding: 5px 114px;
+  text-decoration: none;
+  font-size: 30px;
+  font-family: fantasy;
+}
+
+.navbar a:hover{
+  background-color: darkgrey;
+  color: gray;
+}
+
+.navbar a:active{
+  background-color: darkgrey;
+  color: black;
+}

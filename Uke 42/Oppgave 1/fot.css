@@ -1,0 +1,23 @@
+footer{
+  background-color: dimgray;
+  margin: -8.5px -8px;
+}
+
+.bildeboks{
+  text-align: left;
+  float: left;
+  clear: left;
+}
+
+.logo{
+  width: 57%;
+  height: auto;
+}
+
+.info{
+  text-align: right;
+  font-size: 18px;
+  font-family: fantasy;
+  color: whitesmoke;
+  padding-right: 6px;
+}

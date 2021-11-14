@@ -1,0 +1,13 @@
+body, html{
+  height: 100%;
+}
+
+.bilde{
+  width: 60%;
+  height: auto;
+  -webkit-clip-path: circle(30% at 50% 50%);
+}
+
+.bilde:hover{
+  -webkit-clip-path: polygon(50% 0%, 0 100%, 100% 100%);
+}

@@ -1,0 +1,66 @@
+.tittel{
+  text-align: center;
+  font-size: 500%;
+  font-family: fantasy;
+  background-color: brown;
+  border: 1px solid black;
+}
+
+.innhold{
+  text-align: center;
+  font-size: 150%;
+  font-family: fantasy;
+  border: 1px solid black;
+}
+
+.opp{
+  display: block;
+  float: left;
+  margin-left: auto;
+  margin-right: auto;
+  width: 25%;
+}
+
+.bort{
+  background-color: lightblue;
+  border: 1px solid black;
+}
+
+.bort::after{
+  content: "";
+  clear:both;
+  display: table;
+}
+
+.bilder{
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  height: auto;
+}
+
+.liste{
+  text-align: center;
+  font-size: 100%;
+  font-family: fantasy;
+  background-color: limegreen;
+  border: 1px solid black;
+}
+
+footer{
+  background-color: grey;
+  border: 1px solid black;
+}
+
+.logo{
+  text-align: left;
+  width: 5%;
+  height: auto;
+  margin-bottom: -42px;
+}
+
+.fot{
+  text-align: right;
+  font-family:fantasy;
+}

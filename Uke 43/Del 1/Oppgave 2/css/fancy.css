@@ -1,0 +1,23 @@
+body{
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: "Irish Grover", cursive;
+  background: #333;
+}
+
+h1{
+  font-size: 69px;
+  text-transform: uppercase;
+  font-weight: 900;
+  letter-spacing: 10px;
+  position: absolute;
+  top: 20%;
+  left: 20%;
+  transform: translate(-10%, -10%);
+  margin: 0;
+  background: url("/Users/Elphie/Documents/Atom Projects/ALF kurs/Uke 43/Oppgave 2/bilde/groovy.jpg"); repeat 0 0;
+  background-size: cover;
+  -webkit-text-fill-color:transparent;
+  -webkit-background-clip:text;
+}

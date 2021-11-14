@@ -1,0 +1,8 @@
+body{
+  background-image: url("Eiffel.jpg");
+  background-color: blue;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-blend-mode: lighten;
+  background-color: invert;
+}

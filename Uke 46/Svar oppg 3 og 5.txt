@@ -1,0 +1,16 @@
+Oppgave 3:
+
+1. Brukes til å finne de første verdiene en søker på
+
+2. Brukes for å hente ut elementer i html eller css kode. "id" er generelt brukt for å hente ut et html element og "class" for å hente ut en css klasse.
+
+3. "Lytter" etter en spesifisert hendelse f.eks et tastetrykk eller museklikk
+
+4. De alle brukes for å sette variabler. "var" er global, mens "const" og "let" er privat(de holder seg innen for brackets/blokcs)
+	var brukes for å sette en global variabel
+	let brukes for å setten en variabel innen for en block
+	const er som let men verdien som er satt kan ikke endres
+
+Oppgave 5:
+
+"$" brukse til å forkorte funksjoner/snarveg for document.getElementById()

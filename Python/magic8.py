@@ -20,5 +20,3 @@ while True:
             break
         else:
             print('answer: ' + answer + '\n')
-    
-        lulle = "lul"

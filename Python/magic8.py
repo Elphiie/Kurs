@@ -19,4 +19,4 @@ while True:
         elif question.lower() == 'change name':
             break
         else:
-            print('answer: ' + answer + '\n')hjgjhg
+            print('answer: ' + answer + '\n')

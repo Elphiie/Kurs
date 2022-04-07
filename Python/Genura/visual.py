@@ -1,89 +1,68 @@
-import argparse
-import numpy as np
-from matplotlib import pyplot as plt
-import matplotlib.animation as animation
-import random as rng
+from random import randint
+import pyglet
+from pyglet import shapes, sprite, clock
 from time import sleep
 
-plt.rcParams['figure.figsize'] = [8, 8]
-plt.rcParams['figure.autolayout'] = True
+window = pyglet.window.Window(960, 540)
 
-x = rng.randint(-10, 10)
-y = rng.randint(-10, 10)
+batch = pyglet.graphics.Batch()
 
-plt.xlim(-11, 11)
-plt.ylim(-11, 11)
+dot_rng_pos_x = randint(0, window.width)
+dot_rng_pos_y = randint(0, window.height)
 
-plt.xticks(np.arange(-10, 11, step=1))
-plt.yticks(np.arange(-10, 11, step=1))
 
-plt.grid()
 
-class Unit:
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+rng_color = [randint(0, 255), randint(0, 255), randint(0, 255)]
 
-    def spawn():
 
-        plt.plot(
-            x, y,
-            marker='o',
-            markersize=10,
-            markeredgecolor='blue',
-            markerfacecolor='red'
-            )
-        plt.show()
-        
 
-class Movement:
+dot = shapes.Circle(dot_rng_pos_x, dot_rng_pos_y, 5, color=rng_color, batch = batch)
 
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+class Food:
+    def foods(num_food):
+        for i in range(num_food):
+            food_pos_x = randint(0, window.width-10)
+            food_pos_y = randint(0, window.height-10)
+            gen_food = shapes.Circle(food_pos_x, food_pos_y, 3, color=(255, 0, 0), batch = None)
+        return gen_food
 
-    def move_x(self, x):
-        num = 0
-        while True:
-            num = rng.randint(0, 1)
 
-            if num == 1:
-                x += 1
-            else:
-                x -= 1
-            
-            sleep(1)
-                
-    def move_y(self, y):
-        num = 0
-        while True:
-            num = rng.randint(0, 1)
 
-            if num == 1:
-                y += 1
-            else:
-                y -= 1
-            
-            sleep(1.5)
-
-class Life:
+@window.event
+def rng_move(dt):
     
-    unit = Unit.spawn
+    x_i = randint(0, 10)
+    y_i = randint(0, 10)
 
-    movex = Movement.move_x
+    if x_i == 1:
+        dot.x += 1
+            
+    elif x_i == 2:
+        dot.x -= 1
+    
+    else:
+        dot.x += 0
 
-    movey = Movement.move_y
 
-    def move(unit, movex, movey):
-        unit = plt.plot(
-            x=movex,
-            y=movey
-        )
-        plt.show()
+    if y_i == 1:
+        dot.y += 1
 
-Unit.spawn()
+    elif y_i == 2:
+        dot.y -= 1
 
-sleep(4)
+    else:
+        dot.y += 0
 
-Life.move()
+food = Food.foods(50)
+
+@window.event
+def on_draw():
+    
+    window.clear()
+    batch.draw()
+    food.draw()
+
+
+pyglet.clock.schedule_interval(rng_move, 1/120)
+pyglet.app.run()

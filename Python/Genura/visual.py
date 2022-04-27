@@ -1,8 +1,6 @@
-from ctypes import resize
 import math
 from random import randint
-from re import A
-from turtle import width
+from turtle import width, window_width
 import pyglet
 from pyglet import shapes, clock, sprite, image, resource, app
 from pyglet.gl import *
@@ -34,8 +32,6 @@ class Setup:
 all_food = []
 #the dot
 dot = Setup.life()
-if dot.x > 799 or dot.y > 599:
-    dot.delete()
 #food generator
 class Food():
 
@@ -45,11 +41,9 @@ class Food():
         gen_food = shapes.Circle(food_pos_x, food_pos_y, 3, color=(255, 0, 0), batch = main_batch)
         return gen_food
 
-global x_i, y_i
 class Movement:
-    global x_i, y_i
     #just to check movement. rendunant code. remove or eddit
-    def rng_move(dt):
+    def rng_move():
     
         x_i = randint(0, 10)
         y_i = randint(0, 10)
@@ -73,26 +67,46 @@ class Movement:
         else:
             dot.y += 0
 
-    def hunt(dt):
-        target = None
-        target_d = float( 'inf' )
+    def hunt():
+        t = None
+        t_d = float('inf')
 
-        for e in list( all_food ):
+        for e in all_food:
             d = math.dist( (dot.x, dot.y), (e.x, e.y) )
+        
+            if d < t_d:
+                t = e
+                t_d = d
+
+
+            if t:
+
+                if t_d > 2:
+
+                    tdx = math.dist((dot.x), (t.x))
+                    tdy = math.dist((dot.y), (t.y))
+
+                    dot.x -= tdy
+                    dot.y -= tdx
 
             
-            if d > 0:
-                
-        
-        
-            
-            
+            if t_d < 3:
+                all_food.remove(t)
 
+    def border():
+        if dot.x > 795:
+            dot.x -= 1
 
-        
+        if dot.x < 5:
+            dot.x += 1
 
+        if dot.y > 595:
+            dot.y -= 1
+
+        if dot.y < 5:
+            dot.y += 1
         
-#just to check movement. rendunant code. remove or eddit
+        
 
 #gettin everything to show on screen
 @game_window.event
@@ -100,17 +114,21 @@ def on_draw():
     game_window.clear()
     main_batch.draw()
 
+
 #spawns food if the number of food is less than n
 def spawn_food(dt):
-    if len(all_food) < 50:
+    if len(all_food) < 2:
         all_food.append(Food.get_food())
 
     else:
         pass
-    
+
+def movement(dt):
+    Movement.border() 
+    Movement.hunt()
 
 def respawn(dt):
-     if dot == None:
+     if dot == '':
         Setup.life()
 
 
@@ -121,9 +139,9 @@ if __name__ == "__main__":
 
     # Update the game 120 times per second
 
-    clock.schedule_interval(Movement.hunt, 1/130)
-    clock.schedule_interval(respawn, 1/130)
+    clock.schedule_interval(movement, 1/120)
+    clock.schedule_interval(respawn, 1/230)
     #spawns the food at random intervals
-    clock.schedule_interval(spawn_food, randint(0, 5))
+    clock.schedule_interval(spawn_food, randint(0, 3))
     # Tell pyglet to do its thing
     app.run()

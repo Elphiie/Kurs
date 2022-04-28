@@ -83,11 +83,11 @@ class Movement:
 
                 if t_d > 2:
 
-                    tdx = math.dist((dot.x), (t.x))
-                    tdy = math.dist((dot.y), (t.y))
+                    tdx = math.atan((t.x))
+                    tdy = math.atan((t.y))
 
-                    dot.x -= tdy
-                    dot.y -= tdx
+                    dot.x += tdy
+                    dot.y += tdx
 
             
             if t_d < 3:

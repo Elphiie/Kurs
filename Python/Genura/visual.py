@@ -16,8 +16,8 @@ batch = pyglet.graphics.Batch()
 
 score_draw = True
 score_now = score_best = 0
-score_now_label = pyglet.text.Label()
-score_best_label = pyglet.text.Label( anchor_x='right' )
+score_now_label = text.Label()
+score_best_label = text.Label( anchor_x='right' )
 
 time_sum = 0
 time_min = 1/60*0.9
@@ -26,15 +26,13 @@ time_min = 1/60*0.9
 
 def score( s=0 ):
     global score_draw, score_now, score_best
-    for d in dot:
-        for ds in d:
-            score_draw = True
-            score_now = max( 0, score_now+s )
-            score_best = max( score_now, score_best )
+    
+    score_draw = True
+    score_now = max( 0, score_now+s )
+    score_best = max( score_now, score_best )
 
-    return d, score_now
+    return score_now
 
-s=0
 #the being
 def life():
     global dot_life
@@ -45,7 +43,7 @@ def life():
     dots = shapes.Circle(dot_rng_pos_x, dot_rng_pos_y, 7, color=rng_color, batch = main_batch)
 
     for d in dot:
-        dot_life = randint(20, 60)
+        dot_life = randint(40, 120)
         dot_life -= time_sum
 
         if dot_life < 1:
@@ -73,8 +71,8 @@ class Movement:
        
 
         for d in dot:
-            x_i = randint(0, 10)
-            y_i = randint(0, 10)
+            x_i = randint(0, 3)
+            y_i = randint(0, 3)
 
             try:
                 if x_i == 1:
@@ -100,41 +98,42 @@ class Movement:
 
     def hunt():
         global dot_life, score_best
-        t = None
-        t_d = float('inf')
 
         for do in dot:
-            for e in all_food:
-                d = math.dist( (do.x, do.y), (e.x, e.y) )
+            t = None
+            t_d = randint(25, 250)
+            if t == None:
+                for e in all_food:
+                    d = math.dist( (do.x, do.y), (e.x, e.y) )
 
+                    if d < t_d:
+                        t_d = d
+                        t = e
 
-                if d < t_d:
-                    t_d = d
-                    t = e
 
             if t:
 
                 if t_d > 1:
                     try:
                         if t.x < do.x:
-                            do.x -= t.x / 80 / 2
+                            do.x -= t.x / do.x*2
                         if t.y < do.y:
-                            do.y -= t.y / 60 / 2
+                            do.y -= t.y / do.y*2
                         if t.x > do.x:
-                            do.x += t.x / 80 / 2
+                            do.x += t.x / do.x*2
                         if t.y > do.y:
-                            do.y += t.y / 60 / 2
+                            do.y += t.y / do.y*2
                     except:
                         len(dot) < 1
     
-                if t:
-                    if t_d < 7:
-                        try:
-                            all_food.remove(t)
-                            dot_life += 1
-                            score( s = 1)
-                        except:
-                            len(all_food) < 1
+                if t_d < 7:
+                    try:
+                        all_food.remove(t)
+                        dot_life += 1
+                        score( s = 1)
+                    except:
+                        len(all_food) < 1
+
 
     def border():
         for d in dot:
@@ -167,20 +166,15 @@ def on_draw():
         snl.font_size = game_window.height//30
         snl.draw()
 
-        sbl = score_best_label
-        sbl.text = f'Best {score_best:08d}'
-        sbl.font_size = game_window.height//30
-        sbl.x = game_window.width
-        sbl.draw()
 #spawns food if the number of food is less than n
 def spawn_food(dt):
-    if len(all_food) < 5:
+    if len(all_food) < 50:
         all_food.append(Food.get_food())
 
     else:
         pass
 def spawn_life(dt):
-    if len(dot) < 3:
+    if len(dot) < 16:
         dot.append(life())
 
 def movement(dt):
@@ -198,6 +192,6 @@ if __name__ == "__main__":
     clock.schedule_interval(movement, 1/60)
     clock.schedule_interval(spawn_life, randint(0, 10))
     #spawns the food at random intervals
-    clock.schedule_interval(spawn_food, randint(0, 3))
+    clock.schedule_interval(spawn_food, randint(0, 5))
     # Tell pyglet to do its thing
     app.run()

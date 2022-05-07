@@ -194,6 +194,7 @@ def spawn_food(dt):
 def spawn_life(dt):
     if len(dot) < 16:
         dot.append(life())
+        print(dot)
     if len(line) < 16:
         line.append(lines())
 

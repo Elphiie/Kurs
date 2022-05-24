@@ -32,18 +32,23 @@ def score( s=0 ):
 
     return score_now
 dot = []
+enemy = []
+def create_obj(radius, r, g, b):
+    x = randint(0, game_window.width-10)
+    y = randint(0, game_window.height-10)
+    return shapes.Circle(x, y, radius, color=[r, g, b], batch=main_batch)
 
 #the being
 def life():
-    global dot_life, rng_color
-    dot_rng_pos_x = randint(0, game_window.width)
-    dot_rng_pos_y = randint(0, game_window.height)
-    rng_color = [randint(25, 100), randint(50, 255), randint(50, 255)]
+    global dot_life
+    r = randint(50, 125)
+    g = randint(75, 255)
+    b = randint(75, 255)
 
-    dots = shapes.Circle(dot_rng_pos_x, dot_rng_pos_y, 7, color=rng_color, batch = main_batch)
+    dots = create_obj(7, r, g, b)
 
     for d in dot:
-        dot_life = randint(5, 10)
+        dot_life = randint(40, 100)
         dot_life -= time_sum
 
         if dot_life < 1:
@@ -51,20 +56,13 @@ def life():
 
     return dots
 
-line = []
+def enemies():
+    r = randint(100, 255)
+    g = randint(75, 200)
+    b = randint(50, 75)
 
-def lines():
-    for d in dot:
-        lsx1 = d.x
-        lsy1 = d.y
-
-        lsx2 = d.x
-        lsy2 = d.y
-
-        line=shapes.Line(lsx1, lsy1, lsx2, lsy2, 3, rng_color, batch=main_batch)
-
-    return line
-
+    enemy = create_obj(8, r, g, b)
+    return enemy
 
 
 #to store the food generated
@@ -74,13 +72,9 @@ all_food = []
 
 
 #food generator
-class Food():
-
-    def get_food():
-        food_pos_x = randint(0, game_window.width-10)
-        food_pos_y = randint(0, game_window.height-10)
-        gen_food = shapes.Circle(food_pos_x, food_pos_y, 3, color=(255, 0, 0), batch = main_batch)
-        return gen_food
+def get_food():
+    gen_food = create_obj(3, 255, 20, 20)
+    return gen_food
 
 class Movement:
     #just to check movement. rendunant code. remove or eddit
@@ -128,19 +122,18 @@ class Movement:
                         t_d = d
                         t = e
 
-
             if t:
 
                 if t_d > 1:
                     try:
                         if t.x < do.x:
-                            do.x -= math.atan(t.x)
+                            do.x -= math.pi / math.atan(t.x)
                         if t.y < do.y:
-                            do.y -= math.atan(t.y)
+                            do.y -= math.pi / math.atan(t.y)
                         if t.x > do.x:
-                            do.x += math.atan(t.x)
+                            do.x += math.pi / math.atan(t.x)
                         if t.y > do.y:
-                            do.y += math.atan(t.y)
+                            do.y += math.pi / math.atan(t.y)
                     except:
                         len(dot) < 1
     
@@ -189,14 +182,14 @@ def on_draw():
 #spawns food if the number of food is less than n
 def spawn_food(dt):
     if len(all_food) < 50:
-        all_food.append(Food.get_food())
+        all_food.append(get_food())
 
 def spawn_life(dt):
     if len(dot) < 16:
         dot.append(life())
-        print(dot)
-    if len(line) < 16:
-        line.append(lines())
+
+    if len(dot) > 3 and len(enemy) < 2:
+        enemy.append(enemies())
 
 def movement(dt):
     global time_sum, time_min
@@ -211,7 +204,7 @@ if __name__ == "__main__":
     # Update the game 120 times per second
 
     clock.schedule_interval(movement, 1/60)
-    clock.schedule_interval(spawn_life, randint(3, 15))
+    clock.schedule_interval(spawn_life, 1)
     #spawns the food at random intervals
     clock.schedule_interval(spawn_food, 1/3)
     # Tell pyglet to do its thing

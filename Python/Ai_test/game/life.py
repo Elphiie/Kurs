@@ -16,7 +16,7 @@ class Life:
 
     def draw(self, win):
         pygame.draw.rect(
-            win, self.color, (self.x, self.y, self.WIDTH, self.HEIGHT), border_radius=5)
+            win, self.color, (self.x, self.y, self.WIDTH, self.HEIGHT))
 
     def move_up(self, up=True):
         if up:

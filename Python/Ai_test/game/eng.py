@@ -1,5 +1,3 @@
-from faulthandler import dump_traceback
-from tracemalloc import start
 import pygame
 from .life import Life
 from .food import Food
@@ -28,8 +26,10 @@ class Game:
     SCORE_FONT = pygame.font.SysFont("comicsans", 50)
     WHITE = (255, 255, 255)
     YELLOW = (255, 255, 0)
-    BLACK = (0, 0, 0)
+    BLACK = (75, 75, 75)
     RED = (255, 0, 0)
+    BLUE = (50, 20, 255)
+    GREEN = (20, 255, 150)
 
     start_time = time.time()
     clock = pygame.time.Clock()
@@ -39,9 +39,9 @@ class Game:
         self.window_height = window_height
 
         self.life_1 = Life(
-            self.window_width - 10 - Life.WIDTH, self.window_height // 2 - Life.HEIGHT//2)
+            self.BLUE, self.window_width - 10 - Life.WIDTH, self.window_height // 2 - Life.HEIGHT//2)
         self.life_2 = Life(
-            self.window_width - 10 - Life.WIDTH, self.window_height // 2 - Life.HEIGHT//2)
+            self.GREEN, self.window_width - 10 - Life.WIDTH, self.window_height // 2 - Life.HEIGHT//2)
         self.food = Food(self.window_width // 2, self.window_height // 2)
         
 
@@ -54,29 +54,30 @@ class Game:
 
     def _draw_score(self):
         left_score_text = self.SCORE_FONT.render(
-            f"{self.score_1}", 1, self.WHITE)
+            f"{self.score_1}", 1, self.BLUE)
         right_score_text = self.SCORE_FONT.render(
-            f"{self.score_2}", 1, self.WHITE)
+            f"{self.score_2}", 1, self.GREEN)
         time_text = self.SCORE_FONT.render(
             f"{self.dur}", 1, self.YELLOW)
-        fps_text = self.SCORE_FONT.render(
-            f"{self.fps}", 1, self.YELLOW)
+        # fps_text = self.SCORE_FONT.render(
+        #     f"{self.fps}", 1, self.YELLOW)
             
         self.window.blit(left_score_text, (self.window_width //
                                            4 - left_score_text.get_width()//2, 20))
         self.window.blit(right_score_text, (self.window_width * (3/4) -
                                             right_score_text.get_width()//2, 20))
-        self.window.blit(time_text, (self.window_width * (1/3) -
+        self.window.blit(time_text, (self.window_width * (1/2) -
                                             time_text.get_width()//2, 20))
-        self.window.blit(fps_text, (self.window_width * -(1/3) -
-                                            fps_text.get_width()//2, 20,
-                                    self.window_height - 50, 15))
+        # self.window.blit(fps_text, (self.window_width * -(1/3) -
+        #                                     fps_text.get_width()//2, 20,
+        #                             self.window_height - 50, 15))
 
     def _handle_collision(self):
         food = self.food
         life1 = self.life_1
         life2 = self.life_2
         d = math.dist((life1.x, life1.y), (life2.x, life2.y))
+        
 
         if life1.y + Life.HEIGHT >= self.window_height:
 
@@ -106,15 +107,7 @@ class Game:
             self.score_2 -= 1
             life2.reset()
 
-
-        if d < Life.HEIGHT or d < Life.WIDTH:
-            self.life_1.VEL *= -1
-            self.life_2.VEL *= -1
-        else:
-            self.life_1.VEL = 4
-            self.life_2.VEL = 4
         
-
 
     def draw(self, draw_score=True):
         self.window.fill(self.BLACK)
@@ -232,7 +225,7 @@ class Game:
         self.life_2.move_right()
 
         self._handle_collision()
-        
+
         for lif in [self.life_1]:
             d = math.dist((lif.x, lif.y), (self.food.x, self.food.y))
 
@@ -241,8 +234,8 @@ class Game:
                 self.score_1 += 25
                 
 
-        for lif in [self.life_2]:
-            d = math.dist((lif.x, lif.y), (self.food.x, self.food.y))
+        for life in [self.life_2]:
+            d = math.dist((life.x, life.y), (self.food.x, self.food.y))
 
             if d <= self.food.RADIUS * 2 + self.life_2.WIDTH:
                 self.score_2 += 25

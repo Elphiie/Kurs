@@ -14,7 +14,9 @@ class GoL:
         self.game = Game(window, width, height)
         self.life_1 = self.game.life_1
         self.life_2 = self.game.life_2
+        self.dur = self.game.dur
         self.food = self.game.food
+
 
     def test_ai(self, net):
         """
@@ -102,11 +104,13 @@ class GoL:
 
             duration = time.time() - start_time
 
+            self.game.dur = round(duration, 2)
+
             if game_info.score_1 >= 75 or game_info.score_2 >= 75 or game_info.score_1 <= -100 or game_info.score_2 <= -100 or duration >= 2:
                 self.calculate_fitness(game_info, duration)
                 break
 
-        return False, clock, duration
+        return False
 
     def move_ai(self, net1, net2):
         """

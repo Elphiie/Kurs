@@ -15,6 +15,8 @@ class GoL:
         self.life_1 = self.game.life_1
         self.life_2 = self.game.life_2
         self.dur = self.game.dur
+        self.fps = self.game.fps
+        self.raw_dur = self.game.raw_dur
         self.food = self.game.food
 
 
@@ -88,7 +90,13 @@ class GoL:
         self.genome2 = genome2
 
         while run:
-            # clock.tick(60)
+            
+
+            clock.tick(600)
+            raw_time = pygame.time.get_ticks()
+            fps = clock.get_fps()
+
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     return True
@@ -101,14 +109,18 @@ class GoL:
                 self.game.draw(draw_score=True)
 
             pygame.display.update()
-
             duration = time.time() - start_time
-
+            self.game.fps = round(fps, 2)
+            self.game.raw_dur = round(raw_time/1000, 2)
             self.game.dur = round(duration, 2)
 
             if game_info.score_1 >= 75 or game_info.score_2 >= 75 or game_info.score_1 <= -100 or game_info.score_2 <= -100 or duration >= 2:
                 self.calculate_fitness(game_info, duration)
+                self.game.rounds += 1
                 break
+            
+                
+            
 
         return False
 

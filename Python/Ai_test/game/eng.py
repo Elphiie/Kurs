@@ -24,6 +24,7 @@ class Game:
     .reset().
     """
     SCORE_FONT = pygame.font.SysFont("comicsans", 50)
+    INF_FONT = pygame.font.SysFont("comicsans", 25)
     WHITE = (255, 255, 255)
     YELLOW = (255, 255, 0)
     BLACK = (75, 75, 75)
@@ -43,34 +44,46 @@ class Game:
         self.life_2 = Life(
             self.GREEN, self.window_width - 10 - Life.WIDTH, self.window_height // 2 - Life.HEIGHT//2)
         self.food = Food(self.window_width // 2, self.window_height // 2)
+
+        # with open('C:/Users/Elphie/Documents/Atom_Projects/ALF_kurs/Kurs/Python/Ai_test/game/save.txt', 'r') as f:
+        #     save_data = f.read()
+        #     # to_int = int(save_data)
         
 
         self.score_1 = 0
         self.score_2 = 0
         self.dur = 0
         self.fps = 0
+        self.raw_dur = 0
+        self.rounds = 0
         self.window = window
-
-
+        
     def _draw_score(self):
         left_score_text = self.SCORE_FONT.render(
-            f"{self.score_1}", 1, self.BLUE)
+            f"Blue Score: {self.score_1}", 1, self.BLUE)
         right_score_text = self.SCORE_FONT.render(
-            f"{self.score_2}", 1, self.GREEN)
-        time_text = self.SCORE_FONT.render(
-            f"{self.dur}", 1, self.YELLOW)
-        # fps_text = self.SCORE_FONT.render(
-        #     f"{self.fps}", 1, self.YELLOW)
+            f"Green Score: {self.score_2}", 1, self.GREEN)
+        time_text = self.INF_FONT.render(
+            f"Time: {self.dur}", 1, self.YELLOW)
+        tick_text = self.INF_FONT.render(
+            f"Ticks: {self.raw_dur}", 1, self.YELLOW)
+        fps_text = self.INF_FONT.render(
+            f"FPS: {self.fps}", 1, self.YELLOW)
+        rounds_text = self.SCORE_FONT.render(
+            f"Rounds: {self.rounds}", 1, self.RED)
             
         self.window.blit(left_score_text, (self.window_width //
                                            4 - left_score_text.get_width()//2, 20))
         self.window.blit(right_score_text, (self.window_width * (3/4) -
                                             right_score_text.get_width()//2, 20))
-        self.window.blit(time_text, (self.window_width * (1/2) -
-                                            time_text.get_width()//2, 20))
-        # self.window.blit(fps_text, (self.window_width * -(1/3) -
-        #                                     fps_text.get_width()//2, 20,
-        #                             self.window_height - 50, 15))
+        self.window.blit(time_text, (self.window_width * (1/18) -
+                                            time_text.get_width()//2, 15))
+        self.window.blit(tick_text, (self.window_width * (1/18) -
+                                            time_text.get_width()//2, 50))
+        self.window.blit(fps_text, (self.window_width * (1/18) -
+                                            fps_text.get_width()//2, 85,))
+        self.window.blit(rounds_text, ((self.window_width * (1/2)) - 75 -
+                                            fps_text.get_width()//2, 30,))
 
     def _handle_collision(self):
         food = self.food
@@ -205,8 +218,6 @@ class Game:
 
         return True
 
-
-
     def loop(self):
         """
         Executes a single game loop.
@@ -214,6 +225,8 @@ class Game:
         :returns: GameInformation instance stating score 
                   and hits of each Life.
         """     
+        
+
         self.life_1.move_up()
         self.life_1.move_down()
         self.life_1.move_left()
@@ -245,8 +258,8 @@ class Game:
         game_info = GameInformation(
             self.score_1, self.score_2, self.dur, self.fps)
 
-
         return game_info
+        
 
     def reset(self):
         """Resets the entire game."""

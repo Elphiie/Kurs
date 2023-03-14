@@ -7,7 +7,7 @@ class Life:
     VEL = 4
     WIDTH = 30
     HEIGHT = 30
-    NRG = 6000
+    NRG = 3000
 
     def __init__(self, color, x, y, NRG):
         self.x = randint(130, 1255)

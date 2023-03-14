@@ -75,18 +75,31 @@ class Game:
 
     def _handle_collision(self):
           
-          for life, score in [(self.life_1, self.score_1), (self.life_2, self.score_2)]:
+        for life in [self.life_1]:
             d = math.dist((life.x, life.y), (self.food.x, self.food.y))
 
-            if d <= Life.WIDTH + (self.food.RADIUS * 2):
-                score += 25
+            
+            if d <= Life.WIDTH + (self.food.RADIUS * 1.2):
+                self.score_1 += 50
                 life.NRG += 1500
-
                 self.food.reset()
 
-            if life.NRG < 2:
-                score -= 7500
-                life.reset()
+            # if life.NRG < 2:
+            #     self.score_1 -= 750
+            #     life.reset()
+
+        for life in [self.life_2]:
+            d = math.dist((life.x, life.y), (self.food.x, self.food.y))
+
+            
+            if d <= Life.WIDTH + (self.food.RADIUS * 1.2):
+                self.score_2 += 50
+                life.NRG += 1500
+                self.food.reset()
+
+            # if life.NRG < 2:
+            #     self.score_2 -= 750
+            #     life.reset()
 
     def draw(self, draw_score=True):
         self.window.fill(self.BLACK)
@@ -100,7 +113,7 @@ class Game:
 
 
     def move_life(self, left=True, up=True, right=True, down=True, cum=True):
-        dist_life = math.dist((self.life_1.x, self.life_1.y), (self.life_2.x, self.life_2.y))
+        # dist_life = math.dist((self.life_1.x, self.life_1.y), (self.life_2.x, self.life_2.y))
         if cum:
             if up:
                 if up and self.life_1.y - Life.HEIGHT <= Life.HEIGHT:
@@ -130,7 +143,8 @@ class Game:
                 self.score_1 -= 1
                 self.life_1.stop(False, False, False, False)
 
-            if dist_life + Life.HEIGHT <= 30:
+            if self.life_1.NRG < 2:
+                self.score_1 -= 10
                 return False
 
         else:
@@ -162,7 +176,8 @@ class Game:
                 self.score_2 -= 1
                 self.life_2.stop(False, False, False, False)
 
-            if dist_life + Life.HEIGHT <= 30:
+            if self.life_2.NRG < 2:
+                self.score_2 -= 10
                 return False    
 
         

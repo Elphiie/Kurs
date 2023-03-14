@@ -111,7 +111,7 @@ class GoL:
                 self.game.draw(draw_score=True)
 
 
-            if game_info.score_1 >= 100 or game_info.score_2 >= 100 or game_info.score_1 <= -100 or game_info.score_2 <= -100:
+            if game_info.score_1 >= 100 or game_info.score_2 >= 100 or game_info.score_1 <= -200 or game_info.score_2 <= -200:
                 self.calculate_fitness(game_info, duration)
                 break
                           
@@ -121,11 +121,11 @@ class GoL:
         players = [(self.genome1, net1, self.life_1, True), (self.genome2, net2, self.life_2, False)]
         
         for (genome, net, life, cum) in players:
-            dist_food = math.dist((life.x, life.y), (self.food.x, self.food.y)) - (self.food.RADIUS * 2)
+            dist_food = math.dist((life.x, life.y), (self.food.x, self.food.y))
             output = net.activate(
                 (
                 life.x,
-                dist_food,
+                math.dist((life.x, life.y), (self.food.x, self.food.y)) - self.food.RADIUS,
                 life.y,
                     )
                 )
@@ -134,7 +134,7 @@ class GoL:
             valid = True
             if decision == 0:  # Don't move
                 valid = self.game.move_life(False, False, False, False, cum=cum)
-                genome.fitness -= 100
+                genome.fitness -= 0.1
                 life.NRG -= 1
                   # we want to discourage this
             elif decision == 1:  # Move up
@@ -151,16 +151,17 @@ class GoL:
                 life.NRG -= 2
 
             if not valid:  # If the movement makes the paddle go off the screen punish the AI
-                genome.fitness -= 100  
+                genome.fitness -= 1
 
             if life.NRG <= 0:
-                genome.fitness -= 500
+                genome.fitness -= 5
 
-                       
-            if dist_food <= life.WIDTH + (self.food.RADIUS * 2.5):
-                genome.fitness += 5
-            elif dist_food <= life.WIDTH + (self.food.RADIUS * 3):
-                genome.fitness += 1   
+            if dist_food <= life.WIDTH + (self.food.RADIUS * 1.2):
+                genome.fitness += 50
+            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2):
+                genome.fitness += 0.5
+            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.5):
+                genome.fitness += 0.1
             
 
                         
@@ -213,12 +214,12 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-14')
+    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-1')
     p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
-    p.add_reporter(neat.Checkpointer(5))
+    p.add_reporter(neat.Checkpointer(1))
 
 
     winner = p.run(eval_genomes, 100)

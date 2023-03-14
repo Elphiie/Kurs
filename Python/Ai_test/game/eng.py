@@ -144,7 +144,7 @@ class Game:
                 self.life_1.stop(False, False, False, False)
 
             if self.life_1.NRG < 2:
-                self.score_1 -= 10
+                self.score_1 -= 1
                 return False
 
         else:
@@ -177,7 +177,7 @@ class Game:
                 self.life_2.stop(False, False, False, False)
 
             if self.life_2.NRG < 2:
-                self.score_2 -= 10
+                self.score_2 -= 1
                 return False    
 
         

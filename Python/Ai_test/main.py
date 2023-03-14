@@ -78,11 +78,6 @@ class GoL:
         start_time = time.time()
         clock = pygame.time.Clock()
 
-        life1 = self.life_1
-        life2 = self.life_2     
-
-
-
         net1 = neat.nn.FeedForwardNetwork.create(genome1, config)
         net2 = neat.nn.FeedForwardNetwork.create(genome2, config)
         self.genome1 = genome1
@@ -111,7 +106,7 @@ class GoL:
                 self.game.draw(draw_score=True)
 
 
-            if game_info.score_1 >= 100 or game_info.score_2 >= 100 or game_info.score_1 <= -200 or game_info.score_2 <= -200:
+            if game_info.score_1 >= 50 or game_info.score_2 >= 50 or game_info.score_1 <= -10 or game_info.score_2 <= -10:
                 self.calculate_fitness(game_info, duration)
                 break
                           
@@ -154,14 +149,14 @@ class GoL:
                 genome.fitness -= 1
 
             if life.NRG <= 0:
-                genome.fitness -= 5
+                genome.fitness -= 1
 
             if dist_food <= life.WIDTH + (self.food.RADIUS * 1.2):
-                genome.fitness += 50
+                genome.fitness += 10
             elif dist_food <= life.WIDTH + (self.food.RADIUS * 2):
+                genome.fitness += 2.5
+            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.25):
                 genome.fitness += 0.5
-            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.5):
-                genome.fitness += 0.1
             
 
                         
@@ -181,20 +176,20 @@ def eval_genomes(genomes, config):
     win = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Ai-test")
 
-    node_names = {
-                -7: 'energy',
-                -6: 'pos x',
-                -5: 'food rel x',
-                -4: 'food y',
-                -3: 'pos y',
-                -2: 'food rel y',
-                -1: 'food x',
-                0: 'stop',
-                1: 'up',
-                2: 'down',
-                3: 'left',
-                4: 'right'
-                }
+    # node_names = {
+    #             -7: 'energy',
+    #             -6: 'pos x',
+    #             -5: 'food rel x',
+    #             -4: 'food y',
+    #             -3: 'pos y',
+    #             -2: 'food rel y',
+    #             -1: 'food x',
+    #             0: 'stop',
+    #             1: 'up',
+    #             2: 'down',
+    #             3: 'left',
+    #             4: 'right'
+    #             }
 
     for i, (genome_id1, genome1) in enumerate(genomes):
         print(round(i/len(genomes) * 100), end=" ")
@@ -214,7 +209,7 @@ def eval_genomes(genomes, config):
 
 
 def run_neat(config):
-    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-1')
+    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-11')
     p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
@@ -222,7 +217,7 @@ def run_neat(config):
     p.add_reporter(neat.Checkpointer(1))
 
 
-    winner = p.run(eval_genomes, 100)
+    winner = p.run(eval_genomes, 30)
     with open("best.pickle", "wb") as f:
         pickle.dump(winner, f)
     
@@ -232,13 +227,9 @@ def run_neat(config):
         
 
     node_names = {
-                -7: 'energy',
-                -6: 'pos x',
-                -5: 'food rel x',
-                -4: 'food y',
-                -3: 'pos y',
-                -2: 'food rel y',
-                -1: 'food x',
+                -3: 'pos x',
+                -2: 'food rel pos',
+                -1: 'pos y',
                 0: 'stop',
                 1: 'up',
                 2: 'down',
@@ -270,7 +261,7 @@ def test(config):
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
     config_path = os.path.join(local_dir, 'config.txt')
-    # mp.set_start_method('spawn')
+
     config = neat.Config(neat.DefaultGenome, neat.DefaultReproduction,
                          neat.DefaultSpeciesSet, neat.DefaultStagnation,
                          config_path)
@@ -278,4 +269,4 @@ if __name__ == '__main__':
 
     # spawn()
     run_neat(config)
-    # test(config)
+    test(config)

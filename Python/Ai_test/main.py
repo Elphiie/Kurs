@@ -1,12 +1,13 @@
+import math
+import os
+import pickle
+import time
+
+import neat
+import pygame
+import visualize
 from game import Game
 
-import pygame
-import neat
-import os
-import time
-import pickle
-import math
-import visualize
 
 class GoL:
     def __init__(self, window, width, height):
@@ -15,62 +16,8 @@ class GoL:
         self.life_2 = self.game.life_2
         self.score_1 = self.game.score_1
         self.score_2 = self.game.score_2
-        self.dur = self.game.dur
-        self.fps = self.game.fps
-        self.raw_dur = self.game.raw_dur
         self.food = self.game.food
 
-
-    def test_ai(self, net):
-        clock = pygame.time.Clock()
-        run = True
-        while run:
-            clock.tick(60)
-            game_info = self.game.loop()
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-                    break
-
-
-            output = net.activate(
-                (self.life_1.x, abs(self.life_1.x - self.food.x), self.food.x, self.life_1.y, abs(self.life_1.y - self.food.y), self.food.y))
-            decision = output.index(max(output))
-
-            
-
-            keys = pygame.key.get_pressed()
-            if keys[pygame.K_w]:    #move up
-                self.game.move_life(left=False, up=True, right=False, down=False)
-            elif keys[pygame.K_s]:  #move down
-                self.game.move_life(left=False, up=False, right=False, down=True)
-            elif keys[pygame.K_a]:  #move left
-                self.game.move_life(left=True, up=False, right=False, down=False)
-            elif keys[pygame.K_d]:  #move right
-                self.game.move_life(left=False, up=False, right=True, down=False)
-
-                #diagonal movement
-            if keys[pygame.K_w] and keys[pygame.K_a]:  #move down and left
-                self.game.move_life(left=True, up=True, right=False, down=False)
-            elif keys[pygame.K_w] and keys[pygame.K_d]:  #move up and right
-                self.game.move_life(left=False, up=True, right=True, down=False)
-
-            elif keys[pygame.K_s] and keys[pygame.K_a]:  #move down and left
-                self.game.move_life(left=True, up=False, right=False, down=True)
-            elif keys[pygame.K_s] and keys[pygame.K_d]:  #move down and right
-                self.game.move_life(left=False, up=False, right=True, down=True)
-
-                #opposing keys
-            if keys[pygame.K_w] and keys[pygame.K_s]:  #move down and left
-                self.game.move_life(left=False, up=False, right=False, down=False)
-            elif keys[pygame.K_a] and keys[pygame.K_d]:  #move up and right
-                self.game.move_life(left=False, up=False, right=False, down=False)
-
-        
-
-            self.game.draw(True)
-            pygame.display.update()
 
 
     def train_ai(self, genome1, genome2, config, duration, draw=False):
@@ -243,20 +190,7 @@ def run_neat(config):
     visualize.plot_stats(stats, ylog=False, view=True)
 
     visualize.plot_species(stats, view=True)
-        
     
-def test(config):
-    with open("best.pickle", "rb") as f:
-        winner = pickle.load(f)
-    winner_net = neat.nn.FeedForwardNetwork.create(winner, config)
-
-    width, height = 1280, 720
-    win = pygame.display.set_mode((width, height))
-    pygame.display.set_caption("The Game of Kinda-Life")
-    gol = GoL(win, width, height)
-    gol.test_ai(winner_net)
-
-
 
 if __name__ == '__main__':
     local_dir = os.path.dirname(__file__)
@@ -269,4 +203,3 @@ if __name__ == '__main__':
 
     # spawn()
     run_neat(config)
-    test(config)

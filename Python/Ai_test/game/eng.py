@@ -1,10 +1,11 @@
-import pygame
-from .life import Life
-from .food import Food
-from random import randint
 import math
 import time
+from random import randint
 
+import pygame
+
+from .food import Food
+from .life import Life
 
 pygame.init()
 
@@ -43,23 +44,23 @@ class Game:
         
         self.score_1 = 0
         self.score_2 = 0
-        self.dur = 0
-        self.fps = 0
-        self.raw_dur = 0
+        self.dur = 0.0
+        self.fps = 0.0
+        self.raw_dur = 0.0
         self.rounds = 0
         self.window = window
         
     def _draw_score(self):
         left_score_text = self.SCORE_FONT.render(
-            f"Blue Score: {round(self.score_1)}", 1, self.BLUE)
+            f"Blue Score: {round(self.score_1)}", True, self.BLUE)
         right_score_text = self.SCORE_FONT.render(
-            f"Green Score: {round(self.score_2)}", 1, self.GREEN)
+            f"Green Score: {round(self.score_2)}", True, self.GREEN)
         time_text = self.INF_FONT.render(
-            f"Time: {self.dur}", 1, self.YELLOW)
+            f"Time: {self.dur}", True, self.YELLOW)
         tick_text = self.INF_FONT.render(
-            f"Ticks: {self.raw_dur}", 1, self.YELLOW)
+            f"Ticks: {self.raw_dur}", True, self.YELLOW)
         fps_text = self.INF_FONT.render(
-            f"FPS: {self.fps}", 1, self.YELLOW)
+            f"FPS: {self.fps}", True, self.YELLOW)
 
             
         self.window.blit(left_score_text, (self.window_width //

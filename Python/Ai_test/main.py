@@ -198,24 +198,23 @@ def eval_genomes(genomes, config):
     for i, (genome_id1, genome1) in enumerate(genomes):
         print(round(i/len(genomes) * 100), end=" ")
         genome1.fitness = 0
-        gol = GoL(win, width, height)
         for genome_id2, genome2 in genomes[min(i+1, len(genomes) - 1):]:
             genome2.fitness = 0 if genome2.fitness == None else genome2.fitness
-            
+            gol = GoL(win, width, height)
 
-        force_quit = gol.train_ai(genome1, genome2, config, duration=time.time()-start_time, draw=True)
-        if force_quit:
+            force_quit = gol.train_ai(genome1, genome2, config, duration=time.time()-start_time, draw=True)
+            if force_quit:
             # visualize.draw_net(config, genome1, True, '1', node_names=node_names)
 
             # visualize.draw_net(config, genome2, True, '2', node_names=node_names)
 
-            quit()
+                quit()
 
 
 
 def run_neat(config):
-    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-14')
-    # p = neat.Population(config)
+    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-14')
+    p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)

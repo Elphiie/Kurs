@@ -5,13 +5,15 @@ from random import randint
 
 class Life:
     VEL = 4
-    WIDTH = 20
-    HEIGHT = 20
+    WIDTH = 30
+    HEIGHT = 30
+    NRG = 6000
 
-    def __init__(self, color, x, y):
-        self.x = randint(25, 1255)
-        self.y = randint(75, 695)
+    def __init__(self, color, x, y, NRG):
+        self.x = randint(130, 1255)
+        self.y = randint(130, 650)
         self.color = color
+        self.NRG = NRG
 
 
     def draw(self, win):
@@ -33,14 +35,14 @@ class Life:
         
     def move_left(self, left=True):    
         if left:
-            self.x_vel = 1.6 * self.VEL
+            self.x_vel = self.VEL
             self.x -= self.x_vel
         else: 
             self.x_vel *= 0
 
     def move_right(self, right=True):
         if right:
-            self.x_vel = 1.6 * self.VEL
+            self.x_vel = self.VEL
             self.x += self.x_vel
         else:
             self.x_vel *= 0

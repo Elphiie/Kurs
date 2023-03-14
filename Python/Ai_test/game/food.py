@@ -2,7 +2,7 @@ from turtle import window_width
 import pygame
 from random import randint
 class Food:
-    RADIUS = 20
+    RADIUS = 45
 
     def __init__(self, x, y):
         self.x = randint(25, 1255)

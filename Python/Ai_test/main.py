@@ -53,7 +53,7 @@ class GoL:
                 self.game.draw(draw_score=True)
 
 
-            if game_info.score_1 >= 50 or game_info.score_2 >= 50 or game_info.score_1 <= -100 or game_info.score_2 <= -100:
+            if game_info.score_1 >= 3 or game_info.score_2 >= 3 or game_info.score_1 <= -10 or game_info.score_2 <= -10:
                 self.calculate_fitness(game_info, duration)
                 break
                           
@@ -64,27 +64,54 @@ class GoL:
         window_height = self.game.window_height
         window_width = self.game.window_width
         for (genome, net, life, cum) in players:
+
             dist_food = math.dist((life.x, life.y), (self.food.x, self.food.y))
             near_wall = False
+            food_left = False
+            food_right = False
+            food_up = False
+            food_down = False
 
+            # checks if our squares is close to the window border            
             if window_height + life.y <= window_height + 10:
                 near_wall = True
                 
-            if life.y + life.HEIGHT + 10 >= window_height:
+            elif life.y + life.HEIGHT + 10 >= window_height:
                 near_wall = True
 
-            if window_width + life.x <= window_width + 10:
+            elif window_width + life.x <= window_width + 10:
                 near_wall = True 
 
-            if life.x + life.WIDTH + 10 >= window_width:
+            elif life.x + life.WIDTH + 10 >= window_width:
                 near_wall = True
+
+            # checks if the circle is to the left of the square
+            if life.x - self.food.x <= self.food.RADIUS:
+                food_right = True
+            
+            # checks if the circle is to the right of the square
+            elif life.x - self.food.x >= self.food.RADIUS:
+                food_left = True
+
+
+            # checks if the circle is to the down from the square
+            if life.y - self.food.y <= self.food.RADIUS:
+                food_down = True
+            
+            # checks if the circle is to the up from the square
+            elif life.y - self.food.y >= self.food.RADIUS:
+                food_up = True
+ 
 
             output = net.activate(
                 (
+                food_left,         
                 life.x,
+                food_right,
                 near_wall,
-                abs(math.dist((life.x, life.y), (self.food.x, self.food.y)) - self.food.RADIUS),
-                life.y
+                food_down,                
+                life.y,
+                food_up
                     )
                 )
             decision = output.index(max(output))
@@ -115,11 +142,11 @@ class GoL:
                 genome.fitness -= 1
 
             if dist_food <= life.WIDTH + (self.food.RADIUS * 1.2):
-                genome.fitness += 10
+                genome.fitness += 1
             elif dist_food <= life.WIDTH + (self.food.RADIUS * 2):
-                genome.fitness += 2.5
-            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.25):
                 genome.fitness += 0.5
+            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.25):
+                genome.fitness += 0.1
                         
                               
 
@@ -136,11 +163,14 @@ def eval_genomes(genomes, config):
     win = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Ai-test")
 
-    node_names = {
-                -4: 'pos x',
-                -3: 'near wall',
-                -2: 'food distanse',
-                -1: 'pos y',
+    node_names = {                
+                -7: 'is food left',
+                -6: 'pos x',
+                -5: 'is food right',
+                -4: 'near wall',                
+                -3: 'is food down',
+                -2: 'pos y',
+                -1: 'is food up',
                 0: 'stop',
                 1: 'up',
                 2: 'down',
@@ -157,24 +187,24 @@ def eval_genomes(genomes, config):
 
             force_quit = gol.train_ai(genome1, genome2, config, duration=time.time()-start_time, draw=True)
             if force_quit:
-                # visualize.draw_net(config, genome1, True, '1', node_names=node_names)
+                visualize.draw_net(config, genome1, True, '1', node_names=node_names)
 
-                # visualize.draw_net(config, genome2, True, '2', node_names=node_names)
+                visualize.draw_net(config, genome2, True, '2', node_names=node_names)
 
                 quit()
 
 
 
 def run_neat(config):
-    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-11')
-    p = neat.Population(config)
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-74')
+    # p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(1))
 
 
-    winner = p.run(eval_genomes, 30)
+    winner = p.run(eval_genomes, 75)
     with open("best.pickle", "wb") as f:
         pickle.dump(winner, f)
     
@@ -183,14 +213,14 @@ def run_neat(config):
 
         
 
-    node_names = {
-                -7: 'pos x',
-                -6: 'pos rel wall left',
-                -5: 'pos rel wall right',
-                -4: 'food distanse',
-                -3: 'pos rel wall down',
-                -2: 'pos rel wall up',
-                -1: 'pos x',
+    node_names = {                
+                -7: 'is food left',
+                -6: 'pos x',
+                -5: 'is food right',
+                -4: 'near wall',                
+                -3: 'is food down',
+                -2: 'pos y',
+                -1: 'is food up',
                 0: 'stop',
                 1: 'up',
                 2: 'down',

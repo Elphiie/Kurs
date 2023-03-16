@@ -81,26 +81,21 @@ class Game:
 
             
             if d <= Life.WIDTH + (self.food.RADIUS * 1.2):
-                self.score_1 += 50
-                life.NRG += 1500
+                self.score_1 += 1
+                life.NRG += 2200
                 self.food.reset()
 
-            # if life.NRG < 2:
-            #     self.score_1 -= 750
-            #     life.reset()
+
 
         for life in [self.life_2]:
             d = math.dist((life.x, life.y), (self.food.x, self.food.y))
 
             
             if d <= Life.WIDTH + (self.food.RADIUS * 1.2):
-                self.score_2 += 50
-                life.NRG += 1500
+                self.score_2 += 1
+                life.NRG += 2200
                 self.food.reset()
-
-            # if life.NRG < 2:
-            #     self.score_2 -= 750
-            #     life.reset()
+            
 
     def draw(self, draw_score=True):
         self.window.fill(self.BLACK)

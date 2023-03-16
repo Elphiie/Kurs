@@ -4,14 +4,14 @@ from random import randint
 
 
 class Life:
-    VEL = 4
+    VEL = 6
     WIDTH = 30
     HEIGHT = 30
-    NRG = 3000
+    NRG = 2500
 
     def __init__(self, color, x, y, NRG):
-        self.x = randint(130, 1255)
-        self.y = randint(130, 650)
+        self.x = randint(40, 1240)
+        self.y = randint(40, 660)
         self.color = color
         self.NRG = NRG
 

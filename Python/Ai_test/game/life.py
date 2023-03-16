@@ -15,11 +15,12 @@ class Life:
         self.color = color
         self.NRG = NRG
 
-
+    #to draw a square if called
     def draw(self, win):
         pygame.draw.rect(
             win, self.color, (self.x, self.y, self.WIDTH, self.HEIGHT))
-
+        
+    #movement functions
     def move_up(self, up=True):
         if up:
             self.y_vel = self.VEL

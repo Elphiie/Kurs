@@ -142,18 +142,18 @@ class GoL:
                 valid = self.game.move_life(up=False, down=False, right=True, left=False, cum=cum)
                 life.NRG -= 2
 
-            if not valid:  # If the movement makes the paddle go off the screen punish the AI
+            if not valid:  # If the movement makes the square go off the screen punish the AI
                 genome.fitness -= 1
 
-            if life.NRG <= 0:
+            if life.NRG <= 0: # If the square moves too much punish the
                 genome.fitness -= 1
 
             if dist_food <= life.WIDTH + (self.food.RADIUS * 1.2):
                 genome.fitness += 1
             elif dist_food <= life.WIDTH + (self.food.RADIUS * 2):
-                genome.fitness += 0.5
-            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.25):
                 genome.fitness += 0.1
+            elif dist_food <= life.WIDTH + (self.food.RADIUS * 2.25):
+                genome.fitness += 0.01
                         
                               
 
@@ -197,6 +197,7 @@ def eval_genomes(genomes, config):
 
             force_quit = gol.train_ai(genome1, genome2, config, duration=time.time()-start_time, draw=True)
             if force_quit:
+                #saves an svg file vizualising the network for current genomes playing at the time of closing
                 visualize.draw_net(config, genome1, True, '1', node_names=node_names)
 
                 visualize.draw_net(config, genome2, True, '2', node_names=node_names)
@@ -212,8 +213,6 @@ def run_neat(config):
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(1))
-
-
     winner = p.run(eval_genomes, 75)
     with open("best.pickle", "wb") as f:
         pickle.dump(winner, f)
@@ -224,14 +223,15 @@ def run_neat(config):
         
 
     node_names = {                
-                -9: 'is food left',
-                -8: 'pos x',
-                -7: 'food pos x',
+                -10: 'is food left',
+                -9: 'near edge left',         
+                -8: 'life pos x',
+                -7: 'near edge right',
                 -6: 'is food right',
-                -5: 'near wall',                
+                -5: 'near top',
                 -4: 'is food down',
-                -3: 'food pos y',
-                -2: 'pos y',
+                -3: 'near bottom',                
+                -2: 'life pos y',
                 -1: 'is food up',
                 0: 'stop',
                 1: 'up',
@@ -240,7 +240,8 @@ def run_neat(config):
                 4: 'right'
                 }
     
-
+    '''when current run is complete, saves an svg file containing a visual model for the net with highest fitness 
+    and fitness statistics graph'''
     visualize.draw_net(config, winner, True, node_names=node_names)
 
     visualize.plot_stats(stats, ylog=False, view=True)

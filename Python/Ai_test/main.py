@@ -107,9 +107,11 @@ class GoL:
                 (
                 food_left,         
                 life.x,
+                self.food.x,
                 food_right,
                 near_wall,
-                food_down,                
+                food_down,
+                self.food.y,                
                 life.y,
                 food_up
                     )

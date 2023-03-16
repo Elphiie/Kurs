@@ -65,7 +65,6 @@ class GoL:
         window_width = self.game.window_width
         for (genome, net, life, cum) in players:
             dist_food = math.dist((life.x, life.y), (self.food.x, self.food.y))
-
             near_wall_left = False
             near_wall_right = False
             near_wall_up = False
@@ -90,20 +89,20 @@ class GoL:
                 near_wall_right = True
 
             # checks if the circle is to the left of the square
-            if life.x - self.food.x <= -self.food.RADIUS:
+            if life.x - self.food.x <= 0 - self.food.RADIUS - life.WIDTH:
                 food_right = True
             
             # checks if the circle is to the right of the square
-            elif life.x - self.food.x >= self.food.RADIUS:
+            elif life.x - self.food.x >= life.WIDTH + self.food.RADIUS:
                 food_left = True
 
 
             # checks if the circle is to the down from the square
-            if life.y - self.food.y <= -self.food.RADIUS:
+            if life.y - self.food.y <= 0 - self.food.RADIUS - life.HEIGHT:
                 food_down = True
             
             # checks if the circle is to the up from the square
-            elif life.y - self.food.y >= self.food.RADIUS:
+            elif life.y - self.food.y >= self.food.RADIUS + life.HEIGHT:
                 food_up = True
  
 
@@ -161,7 +160,7 @@ class GoL:
         self.genome1.fitness += game_info.score_1 + duration
         self.genome2.fitness += game_info.score_2 + duration
 
-    
+
 
 
 def eval_genomes(genomes, config):

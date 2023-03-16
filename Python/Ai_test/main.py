@@ -64,9 +64,13 @@ class GoL:
         window_height = self.game.window_height
         window_width = self.game.window_width
         for (genome, net, life, cum) in players:
-
             dist_food = math.dist((life.x, life.y), (self.food.x, self.food.y))
-            near_wall = False
+
+            near_wall_left = False
+            near_wall_right = False
+            near_wall_up = False
+            near_wall_down = False
+
             food_left = False
             food_right = False
             food_up = False
@@ -74,19 +78,19 @@ class GoL:
 
             # checks if our squares is close to the window border            
             if window_height + life.y <= window_height + 10:
-                near_wall = True
+                near_wall_up = True
                 
             elif life.y + life.HEIGHT + 10 >= window_height:
-                near_wall = True
+                near_wall_down = True
 
             elif window_width + life.x <= window_width + 10:
-                near_wall = True 
+                near_wall_left = True 
 
             elif life.x + life.WIDTH + 10 >= window_width:
-                near_wall = True
+                near_wall_right = True
 
             # checks if the circle is to the left of the square
-            if life.x - self.food.x <= self.food.RADIUS:
+            if life.x - self.food.x <= -self.food.RADIUS:
                 food_right = True
             
             # checks if the circle is to the right of the square
@@ -95,7 +99,7 @@ class GoL:
 
 
             # checks if the circle is to the down from the square
-            if life.y - self.food.y <= self.food.RADIUS:
+            if life.y - self.food.y <= -self.food.RADIUS:
                 food_down = True
             
             # checks if the circle is to the up from the square
@@ -105,13 +109,14 @@ class GoL:
 
             output = net.activate(
                 (
-                food_left,         
+                food_left,
+                near_wall_left,         
                 life.x,
-                self.food.x,
+                near_wall_right,
                 food_right,
-                near_wall,
+                near_wall_down,
                 food_down,
-                self.food.y,                
+                near_wall_up,                
                 life.y,
                 food_up
                     )
@@ -166,14 +171,15 @@ def eval_genomes(genomes, config):
     pygame.display.set_caption("Ai-test")
 
     node_names = {                
-                -9: 'is food left',
-                -8: 'pos x',
-                -7: 'food pos x',
+                -10: 'is food left',
+                -9: 'near edge left',         
+                -8: 'life pos x',
+                -7: 'near edge right',
                 -6: 'is food right',
-                -5: 'near wall',                
+                -5: 'near top',
                 -4: 'is food down',
-                -3: 'food pos y',
-                -2: 'pos y',
+                -3: 'near bottom',                
+                -2: 'life pos y',
                 -1: 'is food up',
                 0: 'stop',
                 1: 'up',

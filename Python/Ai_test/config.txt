@@ -6,7 +6,7 @@ reset_on_extinction   = True
 
 [DefaultStagnation]
 species_fitness_func = mean
-max_stagnation       = 17
+max_stagnation       = 20
 species_elitism      = 2
 
 [DefaultReproduction]

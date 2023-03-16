@@ -166,11 +166,13 @@ def eval_genomes(genomes, config):
     pygame.display.set_caption("Ai-test")
 
     node_names = {                
-                -7: 'is food left',
-                -6: 'pos x',
-                -5: 'is food right',
-                -4: 'near wall',                
-                -3: 'is food down',
+                -9: 'is food left',
+                -8: 'pos x',
+                -7: 'food pos x',
+                -6: 'is food right',
+                -5: 'near wall',                
+                -4: 'is food down',
+                -3: 'food pos y',
                 -2: 'pos y',
                 -1: 'is food up',
                 0: 'stop',
@@ -216,11 +218,13 @@ def run_neat(config):
         
 
     node_names = {                
-                -7: 'is food left',
-                -6: 'pos x',
-                -5: 'is food right',
-                -4: 'near wall',                
-                -3: 'is food down',
+                -9: 'is food left',
+                -8: 'pos x',
+                -7: 'food pos x',
+                -6: 'is food right',
+                -5: 'near wall',                
+                -4: 'is food down',
+                -3: 'food pos y',
                 -2: 'pos y',
                 -1: 'is food up',
                 0: 'stop',

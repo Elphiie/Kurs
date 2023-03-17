@@ -89,20 +89,20 @@ class GoL:
                 near_wall_right = True
 
             # checks if the circle is to the left of the square
-            if life.x - self.food.x <= 0 - self.food.RADIUS - life.WIDTH:
+            if life.x - self.food.x <= 0 - self.food.RADIUS:
                 food_right = True
             
             # checks if the circle is to the right of the square
-            elif life.x - self.food.x >= life.WIDTH + self.food.RADIUS:
+            elif life.x - self.food.x >= self.food.RADIUS:
                 food_left = True
 
 
             # checks if the circle is to the down from the square
-            if life.y - self.food.y <= 0 - self.food.RADIUS - life.HEIGHT:
+            if life.y - self.food.y <= 0 - self.food.RADIUS:
                 food_down = True
             
             # checks if the circle is to the up from the square
-            elif life.y - self.food.y >= self.food.RADIUS + life.HEIGHT:
+            elif life.y - self.food.y >= self.food.RADIUS:
                 food_up = True
  
 
@@ -168,7 +168,7 @@ def eval_genomes(genomes, config):
     width, height = 1280, 720
     win = pygame.display.set_mode((width, height))
     pygame.display.set_caption("Ai-test")
-
+    stats = neat.StatisticsReporter()
     node_names = {                
                 -10: 'is food left',
                 -9: 'near edge left',         
@@ -201,18 +201,22 @@ def eval_genomes(genomes, config):
 
                 visualize.draw_net(config, genome2, True, '2', node_names=node_names)
 
+                visualize.plot_stats(stats, ylog=False, view=True)
+
+                visualize.plot_species(stats, view=True)
+
                 quit()
 
 
 
 def run_neat(config):
-    # p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-74')
-    p = neat.Population(config)
+    p = neat.Checkpointer.restore_checkpoint('neat-checkpoint-22')
+    # p = neat.Population(config)
     p.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
     p.add_reporter(stats)
     p.add_reporter(neat.Checkpointer(1))
-    winner = p.run(eval_genomes, 50)
+    winner = p.run(eval_genomes, 60)
     with open("best.pickle", "wb") as f:
         pickle.dump(winner, f)
     
